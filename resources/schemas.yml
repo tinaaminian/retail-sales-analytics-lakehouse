@@ -1,0 +1,30 @@
+resources:
+  schemas:
+    landing:
+      catalog_name: ${var.catalog}
+      name: landing
+      comment: Raw files dropped by source systems
+    bronze:
+      catalog_name: ${var.catalog}
+      name: bronze
+      comment: Raw, append-only ingested data
+    silver:
+      catalog_name: ${var.catalog}
+      name: silver
+      comment: Cleaned, conformed, history-tracked data
+    gold:
+      catalog_name: ${var.catalog}
+      name: gold
+      comment: Star schema and business aggregates
+    ops:
+      catalog_name: ${var.catalog}
+      name: ops
+      comment: Quarantine tables, audit and monitoring
+
+  volumes:
+    raw_files:
+      catalog_name: ${var.catalog}
+      schema_name: ${resources.schemas.landing.name}
+      name: raw
+      volume_type: MANAGED
+      comment: Landing zone for generator output (Auto Loader source)
