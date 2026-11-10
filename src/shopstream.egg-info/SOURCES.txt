@@ -1,7 +1,0 @@
-README.md
-pyproject.toml
-src/shopstream.egg-info/PKG-INFO
-src/shopstream.egg-info/SOURCES.txt
-src/shopstream.egg-info/dependency_links.txt
-src/shopstream.egg-info/requires.txt
-src/shopstream.egg-info/top_level.txt

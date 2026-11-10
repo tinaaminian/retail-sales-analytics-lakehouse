@@ -1,7 +1,0 @@
-
-[dev]
-pyspark>=3.5
-pytest
-ruff
-pre-commit
-faker
