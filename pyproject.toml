@@ -1,3 +1,7 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "shopstream"
 version = "0.1.0"
@@ -6,8 +10,14 @@ requires-python = ">=3.11"
 [project.optional-dependencies]
 dev = ["pyspark>=3.5", "pytest", "ruff", "pre-commit", "faker"]
 
+[tool.setuptools.packages.find]
+where = ["src"]
+
 [tool.ruff]
-line-length = 100
+line-length = 120
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B"]  # pycodestyle, pyflakes, import sorting, bugbear
