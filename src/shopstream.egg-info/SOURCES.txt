@@ -1,0 +1,14 @@
+README.md
+pyproject.toml
+src/generator/__init__.py
+src/generator/chaos.py
+src/generator/config.py
+src/generator/entities.py
+src/generator/main.py
+src/generator/state.py
+src/generator/writer.py
+src/shopstream.egg-info/PKG-INFO
+src/shopstream.egg-info/SOURCES.txt
+src/shopstream.egg-info/dependency_links.txt
+src/shopstream.egg-info/requires.txt
+src/shopstream.egg-info/top_level.txt
