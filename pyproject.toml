@@ -16,6 +16,9 @@ where = ["src"]
 [tool.ruff]
 line-length = 120
 
+[tool.ruff.lint.per-file-ignores]
+"src/pipelines/**" = ["F821"]   # `spark` is injected by the pipeline runtime
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 

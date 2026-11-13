@@ -1,0 +1,16 @@
+resources:
+  pipelines:
+    shopstream_pipeline:
+      name: shopstream-pipeline
+      catalog: ${var.catalog}
+      schema: ${resources.schemas.bronze.name}
+      serverless: true
+      continuous: false
+      channel: CURRENT
+      libraries: 
+        - glob:
+           include: ../src/pipelines/**
+      configuration: 
+          landing_path: /Volumes/${var.catalog}/${resources.schemas.landing.name}/${resources.volumes.raw_files.name}
+      tags:
+        project: shopstream
