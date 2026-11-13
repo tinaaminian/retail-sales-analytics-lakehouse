@@ -6,6 +6,11 @@ resources:
       tags:
         project: shopstream
         layer: source-simulation
+      parameters:
+        - name: batches
+          default: "3"
+        - name: loyalty_points
+          default: "false"
       tasks:
         - task_key: generate
           environment_key: generator_env
@@ -15,7 +20,9 @@ resources:
               - --output-path
               - /Volumes/${var.catalog}/${resources.schemas.landing.name}/${resources.volumes.raw_files.name}
               - --batches
-              - "3"
+              - "{{job.parameters.batches}}"
+              - --loyalty-points
+              - "{{job.parameters.loyalty_points}}"
       environments:
         - environment_key: generator_env
           spec:
