@@ -5,7 +5,7 @@ import inspect
 import os
 import random
 import sys
-
+from generator.manifest import write_manifest
 # Make `import generator...` work when Databricks runs this file directly.
 # Databricks serverless runs the script via exec(), so `__file__` is not defined there.
 # The code object still knows its real path, so we read it from the current frame instead.
@@ -35,8 +35,14 @@ def run(output_path: str, batches: int, seed: int, loyalty_points: bool) -> None
         clean = build_batch(state, cfg, rng, fake)
         messy = add_chaos(clean, rng, cfg.duplicate_rate, cfg.null_rate)
         counts = write_batch(messy, output_path, batch_id)
+        manifest_path = write_manifest(
+            base_path=output_path,
+            batch_id=batch_id,
+            counts=counts,
+            )
         save_state(state, state_path)  # save after every batch -> safe to resume
         print(f"{batch_id} (sim clock {state.clock}): {counts}")
+        print(f"Manifest created: {manifest_path}")
 
 
 def parse_args(argv=None):
