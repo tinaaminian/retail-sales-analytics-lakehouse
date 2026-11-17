@@ -5,6 +5,7 @@ import inspect
 import os
 import random
 import sys
+
 from generator.manifest import write_manifest
 # Make `import generator...` work when Databricks runs this file directly.
 # Databricks serverless runs the script via exec(), so `__file__` is not defined there.
