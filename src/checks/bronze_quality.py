@@ -1,10 +1,8 @@
 
 """Quality checks for records in ShopStream Bronze tables."""
 
-from pyspark.sql import SparkSession
-from pyspark.sql import DataFrame
+from pyspark.sql import DataFrame, SparkSession
 from pyspark.sql import functions as F
-
 
 BRONZE_SOURCES = (
     "customers_cdc",

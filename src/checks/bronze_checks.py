@@ -1,8 +1,7 @@
 # This file implements reconciliation between source files and bronze tables.
 
-from pyspark.sql import  functions as F
 from pyspark.sql import DataFrame, SparkSession
-
+from pyspark.sql import functions as F
 
 BRONZE_SOURCES = (
     "customers_cdc",
