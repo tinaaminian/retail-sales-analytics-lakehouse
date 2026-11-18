@@ -1,9 +1,8 @@
 import argparse
-import sys 
+import sys
 
 from pyspark.sql import SparkSession
 from pyspark.sql import functions as F
-
 
 
 def main():
@@ -18,10 +17,8 @@ def main():
 
     sys.path.insert(0,args.project_root)
     from src.checks.bronze_checks import display_all
-    from src.checks.bronze_quality import (
-    check_all_ingestion_metadata,
-    check_all_rescued_data
-)
+    from src.checks.bronze_quality import check_all_ingestion_metadata, check_all_rescued_data
+
 
     # Creating spark session
     spark = SparkSession.builder.getOrCreate()
