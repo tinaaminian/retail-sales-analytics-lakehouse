@@ -23,7 +23,11 @@ def source_file_counts(spark:SparkSession, landing_path:str, entity:str) -> Data
         spark.read.format("text").load(path)
         .select(
             F.col("value"),
-            F.col("_metadata.file_path").alias("source_file")
+            F.regexp_replace(
+                F.col("_metadata.file_path"),
+                r"^dbfs:",
+                ""
+            ).alias("source_file")
         )
     )
 

@@ -1,0 +1,42 @@
+
+resources:
+  jobs:
+    shopstream_bronze_job:
+      name: shopstream-bronze-${bundle.target}
+
+      # Allow new runs to queue instead of overlapping.
+      max_concurrent_runs: 1
+      queue:
+        enabled: true
+
+      tasks:
+        # Task 1: Run the existing Bronze SDP pipeline.
+        - task_key: bronze_ingestion
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.shopstream_pipeline.id}
+            full_refresh: false
+
+        # Task 2: Validate Bronze after ingestion succeeds.
+        - task_key: bronze_quality_checks
+          depends_on:
+            - task_key: bronze_ingestion
+
+          spark_python_task:
+            python_file: ../src/checks/run_bronze_checks.py
+            parameters:
+              - "--catalog"
+              - "${var.catalog}"
+              - "--bronze-schema"
+              - "${resources.schemas.bronze.name}"
+              - "--landing-path"
+              - "/Volumes/${var.catalog}/${resources.schemas.landing.name}/${resources.volumes.raw_files.name}"
+              - "--project-root"
+              - "${workspace.file_path}"
+
+          # Serverless execution environment for the Python task.
+          environment_key: default
+
+      environments:
+        - environment_key: default
+          spec:
+            environment_version: "2"
