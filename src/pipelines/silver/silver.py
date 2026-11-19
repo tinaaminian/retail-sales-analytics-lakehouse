@@ -1,10 +1,13 @@
 """ Silver layer part1: clean, deduplicate and quality checks based on business events.
 Bad rows are dropped from silver by expectaitons and copied to ops.quarantine_records rather than losing data silently.
 """
+import sys
 
 from pyspark import pipelines as dp
 
-from src.transformations.silver_quality import (
+sys.path.insert(0, spark.conf.get("src_path"))
+
+from transformations.silver_quality import (
     ORDER_ITEM_RULES,
     ORDER_RULES,
     PAYMENT_RULES,
@@ -12,7 +15,7 @@ from src.transformations.silver_quality import (
     STORE_RULES,
     to_quarantine,
 )
-from src.transformations.silver_transformations import (
+from transformations.silver_transformations import (
     clean_orders,
     clean_payments,
     clean_shipments,
@@ -83,17 +86,17 @@ def silver_stores():
     return silver_store_source()
 
 # --- quarantine: one table, one append flow per entity ----------------------------------
-@dp.create_streaming_table(name= QUARANTINE, comment="rows rejected by silver data quality rules")
+dp.create_streaming_table(name= QUARANTINE, comment="rows rejected by silver data quality rules")
 
 @dp.append_flow(target=QUARANTINE, name="quarantine_orders")
 def quarantine_orders():
-    return to_quarantine(clean_orders(spark.readStream.table(fq(BRONZE, "orders"))), ORDER_RULES)
+    return to_quarantine(clean_orders(spark.readStream.table(fq(BRONZE, "orders"))), "orders", ORDER_RULES)
 
 @dp.append_flow(target=QUARANTINE, name= "quarantine_order_items")
 def quarantine_order_items():
     items = explode_order_items(spark.readStream.table(fq(SILVER, "orders")))
     return to_quarantine(items, "order_items", ORDER_ITEM_RULES)
-    
+
 @dp.append_flow(target=QUARANTINE, name="quarantine_payments")
 def quarantine_payments():
     return to_quarantine(clean_payments(spark.readStream.table(fq(BRONZE, "payments"))), "payments", PAYMENT_RULES)
@@ -103,3 +106,18 @@ def quarantine_payments():
 def quarantine_shipments():
     shipments = clean_shipments(spark.readStream.table(fq(BRONZE, "shipments")))
     return to_quarantine(shipments, "shipments", SHIPMENT_RULES)
+
+@dp.append_flow(
+    target=QUARANTINE,
+    name="quarantine_stores",
+)
+def quarantine_stores():
+    stores = clean_stores(
+        spark.readStream.table(fq(BRONZE, "stores"))
+    )
+
+    return to_quarantine(
+        stores,
+        "stores",
+        STORE_RULES,
+    )

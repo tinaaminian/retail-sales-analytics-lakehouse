@@ -12,5 +12,10 @@ resources:
            include: ../src/pipelines/**
       configuration: 
           landing_path: /Volumes/${var.catalog}/${resources.schemas.landing.name}/${resources.volumes.raw_files.name}
+          src_path: ${workspace.file_path}/src
+          catalog: ${var.catalog}
+          bronze_schema: ${resources.schemas.bronze.name}
+          silver_schema: ${resources.schemas.silver.name}
+          ops_schema: ${resources.schemas.ops.name}
       tags:
         project: shopstream
