@@ -33,6 +33,10 @@ SHIPMENT_RULES = {
     "valid_shipped_ts": "shipped_ts IS NOT NULL",
 }
 
+STORE_RULES = {
+    "valid_store_id":"store_id IS NOT NULL",
+}
+
 def failed_rules(rules:dict) -> Column:
     checks = []
 
