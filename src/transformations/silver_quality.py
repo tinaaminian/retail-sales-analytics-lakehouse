@@ -1,8 +1,8 @@
 """ Data quality rules
 Every rule is written null-safe 
 """
-from pyspark.sql import functions as F
 from pyspark.sql import Column, DataFrame
+from pyspark.sql import functions as F
 
 ORDER_RULES = {
     "valid_order_id": "order_is IS NOT NULL",
