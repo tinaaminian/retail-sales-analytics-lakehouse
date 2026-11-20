@@ -1,10 +1,7 @@
 
 # tests/test_silver_checks.py
 
-from checks.silver_checks import (
-    check_not_null,
-    check_duplicates
-)
+from checks.silver_checks import check_duplicates, check_not_null
 
 
 def test_not_null(spark):

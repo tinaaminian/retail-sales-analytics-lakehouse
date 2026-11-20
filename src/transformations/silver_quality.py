@@ -37,6 +37,34 @@ STORE_RULES = {
     "valid_store_id":"store_id IS NOT NULL",
 }
 
+# --- CDC RULES
+CDC_CONTRIL_RULES = {
+    "valid_opetation" : "operation IN ('INSERT', 'UPDATE', 'DELETE')",  
+    "valid_sequence_num": "sequence_num IS NOT NULL",
+    "valid_events_ts": "event_ts IS NOT NULL"
+}
+
+CUSTOMER_CDC_RULES = {
+    "valid_customer_id" : "customer_id IS NOT NULL",
+    **CDC_CONTRIL_RULES,
+    "valid_tier" : "operation = 'DELETE' OR tier IN ('BRONZE','SILVER','GOLD','PLATINUM')",
+    "no_rescued_data": "_rescued_data IS NULL"
+}
+
+PRODUCT_CDC_RULES = {
+     "valid_product_id": "product_id IS NOT NULL",
+     **CDC_CONTRIL_RULES,
+    "valid_price": "operation = 'DELETE' OR (price IS NOT NULL AND price > 0)",
+    "no_rescued_data": "_rescued_data IS NULL",
+}
+
+
+def valid_condition(rules: dict[str, str]) -> str:
+    """Combined condition for rows that pass every rule. Null results count as failures."""
+    return " AND ".join(f"coalesce(({expr}), false)" for expr in rules.values())
+
+
+
 def failed_rules(rules:dict) -> Column:
     checks = []
 

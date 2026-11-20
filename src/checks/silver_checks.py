@@ -1,5 +1,6 @@
 from pyspark.sql import functions as F
 
+
 # Check1: Schema validation
 def check_schema(df,expected_schema):
     actual_schema = {
