@@ -9,7 +9,6 @@ from transformations.customers_products_cdc import (
     clean_products_cdc,
 )
 from transformations.silver_quality import (
-    CUSTOMER_CDC_RULES,
     valid_condition,
 )
 
