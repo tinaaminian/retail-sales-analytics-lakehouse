@@ -4,17 +4,14 @@ From one change feed we build two targets per entity:
 <base> _history -> SCD type2: evety version with _start_at / _end_at
 """
 
-from os import eventfd
 import sys
 
-from pyspark.errors import QueryContext
-from pyspark.sql import catalog, functions as F
 from pyspark import pipelines as dp
-from pyspark.sql.utils import try_partitioning_remote_functions
+from pyspark.sql import functions as F
 
 sys.path.append(spark.conf.get("src_path"))  # same header as silver_events.py
 
-from pipelines.silver.silver import CATALOG, QUARANTINE
+
 from transformations.customers_products_cdc import clean_customer_cdc, clean_products_cdc
 from transformations.silver_quality import CUSTOMER_CDC_RULES, PRODUCT_CDC_RULES, to_quarantine, valid_condition
 from transformations.silver_transformations import dedupe

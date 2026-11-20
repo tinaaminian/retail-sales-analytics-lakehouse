@@ -1,11 +1,10 @@
 """ Clean CDC events for customers and products"""
 
-from ast import alias
-from pyspark.errors.utils import with_origin_to_class
+from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
-from pyspark.sql import DataFrame 
 
 from transformations.silver_transformations import to_ts
+
 
 def _clean_envelope(df: DataFrame) -> DataFrame:
     """ Columns every CDC feed has: opetation, sequence number and event time"""
