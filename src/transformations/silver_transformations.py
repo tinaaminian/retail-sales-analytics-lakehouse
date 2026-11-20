@@ -4,12 +4,7 @@ every function can be unit tested.
 
 from pyspark.sql import Column, DataFrame
 from pyspark.sql import functions as F
-from pyspark.sql.types import (
-    ArrayType,
-    StructType,
-    StructField,
-    StringType
-)
+from pyspark.sql.types import ArrayType, StringType, StructField, StructType
 
 ITEM_SCHEMA = ArrayType(
     StructType([
