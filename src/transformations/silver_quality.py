@@ -5,7 +5,7 @@ from pyspark.sql import Column, DataFrame
 from pyspark.sql import functions as F
 
 ORDER_RULES = {
-    "valid_order_id": "order_is IS NOT NULL",
+    "valid_order_id": "order_id IS NOT NULL",
     "valid_customer_id": "customer_id IS NOT NULL",
     "valid_store_id": "store_id IS NOT NULL",
     "valid_order_ts": "order_ts IS NOT NULL",

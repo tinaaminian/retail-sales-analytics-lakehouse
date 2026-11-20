@@ -4,6 +4,21 @@ every function can be unit tested.
 
 from pyspark.sql import Column, DataFrame
 from pyspark.sql import functions as F
+from pyspark.sql.types import (
+    ArrayType,
+    StructType,
+    StructField,
+    StringType
+)
+
+ITEM_SCHEMA = ArrayType(
+    StructType([
+        StructField("product_id", StringType(), True),
+        StructField("quantity", StringType(), True),
+        StructField("unit_price", StringType(), True)
+
+    ])
+)
 
 META_COLS = ["_source_file", "_ingested_at"]
 
@@ -24,7 +39,9 @@ def clean_orders(df:DataFrame) -> DataFrame:
         F.expr("try_cast(store_id as INT)").alias("store_id"),
         to_ts("order_ts").alias("order_ts"),
         F.upper(F.trim(F.col("currency"))).alias("currency"),
-        F.col("items"),
+
+        #convert json string into ARRAY<STRUCT>
+        F.from_json(F.col("items"), ITEM_SCHEMA).alias("items"),
         F.col("_rescued_data"),
         *META_COLS
     )
