@@ -34,7 +34,7 @@ def register_cdc_entity(base:str, key:str, clean_fn, rules:dict, track_cols: lis
     """ Declare the view, quarantine flows and AUTO CDC flows for one entity"""
 
     bronze_table = f"{base}_cdc"
-    clean_view = f"{bronze_table}_clean",
+    clean_view = f"{bronze_table}_clean"
     valid_view = f"{bronze_table}_valid"
 
     @dp.view(name= clean_view)
@@ -67,7 +67,7 @@ def register_cdc_entity(base:str, key:str, clean_fn, rules:dict, track_cols: lis
         source = valid_view,
         keys = [key],
         sequence_by = F.col("event_ts"),
-        apply_as_deletes = F.expr("opetation = 'DELETE'"),
+        apply_as_deletes = F.expr("operation = 'DELETE'"),
         except_column_list= CDC_CONTROL_COLS,
         stored_as_scd_type=1
     )
@@ -75,10 +75,10 @@ def register_cdc_entity(base:str, key:str, clean_fn, rules:dict, track_cols: lis
     # SCD Type2: a new version whenever a tracked column changes
     dp.create_auto_cdc_flow(
         target = history,
-        aource = valid_view,
+        source = valid_view,
         keys = [key],
         sequence_by= F.col("event_ts"),
-        apply_as_deletes= F.expr("opetation = 'DELETE'"),
+        apply_as_deletes= F.expr("operation = 'DELETE'"),
         except_column_list=CDC_CONTROL_COLS,
         stored_as_scd_type=2,
         track_history_column_list=track_cols
